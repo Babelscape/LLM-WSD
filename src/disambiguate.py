@@ -326,7 +326,6 @@ def process(subtask: str,
             domain: bool,
             fews: bool,
             dataset: bool,
-            multirun: int,
             semcor_samples: dict
             ):
     """
@@ -344,7 +343,6 @@ def process(subtask: str,
         domain (bool): Use 42D domain-specific dataset.
         fews (bool): Use FEWS dataset.
         dataset (bool): Use personal dataset.
-        multirun (int): Number of repeated runs.
         semcor_samples (dict): Few-shot SemCor samples.
 
         Returns:
@@ -432,189 +430,185 @@ def process(subtask: str,
                            model=model)
 
     else:
-        runs = 1 if not multirun else multirun
-        for run in range(runs):
-            if multirun:
-                print(f"Currently running run: {run+1}")
-            prompts = []
-            only_prompts = []
+        prompts = []
+        only_prompts = []
+        
+        if "gpt" in shortcut_model_name:
+            batch_path = f"{output_file_path}/batch_prompt_{prompt_number}.jsonl"
+
+            create_batch(batch_path=batch_path, 
+                        gold_data=gold_data, 
+                        subtask=subtask, 
+                        approach=approach, 
+                        prompt_number=prompt_number, 
+                        model_name=shortcut_model_name2full_model_name[shortcut_model_name], 
+                        max_tokens=max_new_tokens, 
+                        semcor_samples=semcor_samples,
+                        more_context=more_context)
             
-            if "gpt" in shortcut_model_name:
-                batch_path = f"{output_file_path}/batch_prompt_{prompt_number}.jsonl"
+            batch_input_file = OPEN_AI_CLIENT.files.create(
+                file=open(batch_path, "rb"),
+                purpose="batch"
+            )
 
-                create_batch(batch_path=batch_path, 
-                            gold_data=gold_data, 
-                            subtask=subtask, 
-                            approach=approach, 
-                            prompt_number=prompt_number, 
-                            model_name=shortcut_model_name2full_model_name[shortcut_model_name], 
-                            max_tokens=max_new_tokens, 
-                            semcor_samples=semcor_samples,
-                            more_context=more_context)
+            batch_input_file_id = batch_input_file.id
+
+            batch_response = OPEN_AI_CLIENT.batches.create(
+                input_file_id=batch_input_file_id,
+                endpoint="/v1/chat/completions",
+                completion_window="24h",
+                metadata={
+                    "Description": "GPT_disambiguation"
+                }
+            )
+
+            print("Batch input file ID", batch_input_file_id)
+            print("Batch ID:", batch_response.id)
+
+            while True:
+                batch = OPEN_AI_CLIENT.batches.retrieve(batch_response.id) 
+                status = batch.status
+                print("Batch status:", status)
                 
-                batch_input_file = OPEN_AI_CLIENT.files.create(
-                    file=open(batch_path, "rb"),
-                    purpose="batch"
-                )
+                if status in ["completed", "failed"]:
+                    break
+                
+                time.sleep(30)
 
-                batch_input_file_id = batch_input_file.id
+            if batch.status == "completed":
+                output_file_id = batch.output_file_id
+                output = OPEN_AI_CLIENT.files.content(output_file_id)
 
-                batch_response = OPEN_AI_CLIENT.batches.create(
-                    input_file_id=batch_input_file_id,
-                    endpoint="/v1/chat/completions",
-                    completion_window="24h",
-                    metadata={
-                        "Description": "GPT_disambiguation"
-                    }
-                )
+                responses = output.text.splitlines()
 
-                print("Batch input file ID", batch_input_file_id)
-                print("Batch ID:", batch_response.id)
-
-                while True:
-                    batch = OPEN_AI_CLIENT.batches.retrieve(batch_response.id) 
-                    status = batch.status
-                    print("Batch status:", status)
-                    
-                    if status in ["completed", "failed"]:
-                        break
-                    
-                    time.sleep(30)
-
-                if batch.status == "completed":
-                    output_file_id = batch.output_file_id
-                    output = OPEN_AI_CLIENT.files.content(output_file_id)
-
-                    responses = output.text.splitlines()
-
-                    ids, answers = [], []
-                    for response in responses:
-                        json_response = json.loads(response)
-                        instance_id = json_response.get("custom_id", None)
-                        answer = (
-                            json_response.get("response", {})
-                                .get("body", {})
-                                .get("choices", [{}])[0]
-                                .get("message", {})
-                                .get("content", "")
-                        )
-                        ids.append(instance_id)
-                        answers.append(answer)
-
-            elif shortcut_model_name in ["deepseek"]:
                 ids, answers = [], []
-                for instance in tqdm(gold_data):
-                    instance_pos = instance["pos"]
-                    semcor_sample_pos = None
+                for response in responses:
+                    json_response = json.loads(response)
+                    instance_id = json_response.get("custom_id", None)
+                    answer = (
+                        json_response.get("response", {})
+                            .get("body", {})
+                            .get("choices", [{}])[0]
+                            .get("message", {})
+                            .get("content", "")
+                    )
+                    ids.append(instance_id)
+                    answers.append(answer)
 
-                    if instance_pos == "NOUN":
-                        semcor_sample_pos = semcor_samples_NOUN
-                    if instance_pos == "VERB":
-                        semcor_sample_pos = semcor_samples_VERB
-                    if instance_pos == "ADJ":
-                        semcor_sample_pos = semcor_samples_ADJ
-                    if instance_pos == "ADV":
-                        semcor_sample_pos = semcor_samples_ADV
+        elif shortcut_model_name in ["deepseek"]:
+            ids, answers = [], []
+            for instance in tqdm(gold_data):
+                instance_pos = instance["pos"]
+                semcor_sample_pos = None
 
-                    prompt = _generate_prompt(instance=instance, 
+                if instance_pos == "NOUN":
+                    semcor_sample_pos = semcor_samples_NOUN
+                if instance_pos == "VERB":
+                    semcor_sample_pos = semcor_samples_VERB
+                if instance_pos == "ADJ":
+                    semcor_sample_pos = semcor_samples_ADJ
+                if instance_pos == "ADV":
+                    semcor_sample_pos = semcor_samples_ADV
+
+                prompt = _generate_prompt(instance=instance, 
+                                        subtask=subtask, 
+                                        approach=approach, 
+                                        prompt_number=prompt_number, 
+                                        more_context=more_context,
+                                        semcor_samples_pos=semcor_sample_pos)
+                
+                response = OPEN_AI_CLIENT.chat.completions.create(
+                    model=shortcut_model_name2full_model_name[shortcut_model_name],
+                    messages=prompt,
+                    max_tokens=max_new_tokens
+                )
+                ids.append(instance["id"])
+                answers.append(response.choices[0].message.content)
+
+                if len(ids) % 100 == 0:
+                    json_data = [{"instance_id": instance_id, "answer": answer} for instance_id, answer in zip(ids, answers)]
+
+                    output_path_json = f"{output_file_path}/output_prompt_{prompt_number}"
+                    output_path_json += ".json" if not multirun else f"_run{run+1}.json"
+                    with open(output_path_json, "w") as fw_json:
+                        json.dump(json_data, fw_json, indent=4)
+                
+        else:
+            for instance in tqdm(gold_data, total=len(gold_data)):
+                n_instances_processed += 1
+                instance_id = instance["id"]
+                instance_pos = instance["pos"].strip()
+                semcor_sample_pos = None
+
+                if instance_pos == "NOUN":
+                    semcor_sample_pos = semcor_samples_NOUN
+                if instance_pos == "VERB":
+                    semcor_sample_pos = semcor_samples_VERB
+                if instance_pos == "ADJ":
+                    semcor_sample_pos = semcor_samples_ADJ
+                if instance_pos == "ADV":
+                    semcor_sample_pos = semcor_samples_ADV
+
+                chat_prompt = _generate_prompt(instance=instance, 
                                             subtask=subtask, 
                                             approach=approach, 
-                                            prompt_number=prompt_number, 
-                                            more_context=more_context,
-                                            semcor_samples_pos=semcor_sample_pos)
-                    
-                    response = OPEN_AI_CLIENT.chat.completions.create(
-                        model=shortcut_model_name2full_model_name[shortcut_model_name],
-                        messages=prompt,
-                        max_tokens=max_new_tokens
-                    )
-                    ids.append(instance["id"])
-                    answers.append(response.choices[0].message.content)
-
-                    if len(ids) % 100 == 0:
-                        json_data = [{"instance_id": instance_id, "answer": answer} for instance_id, answer in zip(ids, answers)]
-
-                        output_path_json = f"{output_file_path}/output_prompt_{prompt_number}"
-                        output_path_json += ".json" if not multirun else f"_run{run+1}.json"
-                        with open(output_path_json, "w") as fw_json:
-                            json.dump(json_data, fw_json, indent=4)
-                    
-            else:
-                for instance in tqdm(gold_data, total=len(gold_data)):
-                    n_instances_processed += 1
-                    instance_id = instance["id"]
-                    instance_pos = instance["pos"].strip()
-                    semcor_sample_pos = None
-
-                    if instance_pos == "NOUN":
-                        semcor_sample_pos = semcor_samples_NOUN
-                    if instance_pos == "VERB":
-                        semcor_sample_pos = semcor_samples_VERB
-                    if instance_pos == "ADJ":
-                        semcor_sample_pos = semcor_samples_ADJ
-                    if instance_pos == "ADV":
-                        semcor_sample_pos = semcor_samples_ADV
-
-                    chat_prompt = _generate_prompt(instance=instance, 
-                                                subtask=subtask, 
-                                                approach=approach, 
-                                                prompt_number=prompt_number,
-                                                more_context=more_context, 
-                                                semcor_samples_pos=semcor_sample_pos,
-                                                model = shortcut_model_name)
-                    
-                    # Qwen needs to disable thinking
-                    if shortcut_model_name == "qwen32":
-                        prompt_template = tokenizer.apply_chat_template(chat_prompt, tokenize=False, add_generation_prompt=True, enable_thinking=False)
-                    else:
-                        prompt_template = tokenizer.apply_chat_template(chat_prompt, tokenize=False, add_generation_prompt=True)
-
-                    prompts.append({"instance_id": instance_id, "text":prompt_template})
-                    only_prompts.append(prompt_template)
-
-                dataset_ = Dataset.from_list(prompts)
-                prompt_texts = dataset_["text"]
+                                            prompt_number=prompt_number,
+                                            more_context=more_context, 
+                                            semcor_samples_pos=semcor_sample_pos,
+                                            model = shortcut_model_name)
                 
-                batch_size = 8
-                answers = []
-
-                if shortcut_model_name in ["gemma_3_12b", "gemma_3_27b", "qwen32", "llama_70b"]:
-                    params = {
-                        "max_tokens": max_new_tokens
-                    }
-
-                    answers = vllm_inference(
-                        model,
-                        params,
-                        only_prompts,
-                    )
+                # Qwen needs to disable thinking
+                if shortcut_model_name == "qwen32":
+                    prompt_template = tokenizer.apply_chat_template(chat_prompt, tokenize=False, add_generation_prompt=True, enable_thinking=False)
                 else:
-                    for i in tqdm(range(0, len(prompt_texts), batch_size), desc="Processing prompts"):
-                        batch = prompt_texts[i:i + batch_size]
-                        out = pipe(batch, batch_size=batch_size)
-                        answers.extend(_clean(out, batch))
+                    prompt_template = tokenizer.apply_chat_template(chat_prompt, tokenize=False, add_generation_prompt=True)
 
-            if shortcut_model_name in ["gpt", "gpt4_1", "deepseek"]:
-                json_data = [{"instance_id": instance_id, "answer": answer} 
-                    for instance_id, answer in zip(ids, answers)]
+                prompts.append({"instance_id": instance_id, "text":prompt_template})
+                only_prompts.append(prompt_template)
+
+            dataset_ = Dataset.from_list(prompts)
+            prompt_texts = dataset_["text"]
+            
+            batch_size = 8
+            answers = []
+
+            if shortcut_model_name in ["gemma_3_12b", "gemma_3_27b", "qwen32", "llama_70b"]:
+                params = {
+                    "max_tokens": max_new_tokens
+                }
+
+                answers = vllm_inference(
+                    model,
+                    params,
+                    only_prompts,
+                )
             else:
-                json_data = [{"instance_id": instance_id, "answer": answer} 
-                        for instance_id, answer in zip(dataset_["instance_id"], answers)]
+                for i in tqdm(range(0, len(prompt_texts), batch_size), desc="Processing prompts"):
+                    batch = prompt_texts[i:i + batch_size]
+                    out = pipe(batch, batch_size=batch_size)
+                    answers.extend(_clean(out, batch))
 
-            output_path_json = f"{output_file_path}/output_prompt_{prompt_number}"
-            output_path_json += ".json" if not multirun else f"_run{run+1}.json"
+        if shortcut_model_name in ["gpt", "gpt4_1", "deepseek"]:
+            json_data = [{"instance_id": instance_id, "answer": answer} 
+                for instance_id, answer in zip(ids, answers)]
+        else:
+            json_data = [{"instance_id": instance_id, "answer": answer} 
+                    for instance_id, answer in zip(dataset_["instance_id"], answers)]
 
-            with open(output_path_json, "w") as fw_json:
-                json.dump(json_data, fw_json, indent=4)
+        output_path_json = f"{output_file_path}/output_prompt_{prompt_number}"
+        output_path_json += ".json" if not multirun else f"_run{run+1}.json"
 
-            output_path_txt = f"{output_file_path}/output_prompt_{prompt_number}"
-            output_path_txt += ".txt" if not multirun else f"_run{run+1}.txt"
-            with open(output_path_txt, "w") as fa_txt:
-                for entry in json_data:
-                    try:
-                        fa_txt.write(f"{entry['instance_id']}\t{entry['answer']}\n")
-                    except:
-                        fa_txt.write(f"{entry['instance_id']}\t \n")
+        with open(output_path_json, "w") as fw_json:
+            json.dump(json_data, fw_json, indent=4)
+
+        output_path_txt = f"{output_file_path}/output_prompt_{prompt_number}"
+        output_path_txt += ".txt" if not multirun else f"_run{run+1}.txt"
+        with open(output_path_txt, "w") as fa_txt:
+            for entry in json_data:
+                try:
+                    fa_txt.write(f"{entry['instance_id']}\t{entry['answer']}\n")
+                except:
+                    fa_txt.write(f"{entry['instance_id']}\t \n")
 
 
 if __name__ == "__main__":
@@ -634,7 +628,6 @@ if __name__ == "__main__":
     parser.add_argument("--domain", "-do", action="store_true", help="If want to run on 42D dataset")
     parser.add_argument("--fews", "-fe", action="store_true", help="If want to run on FEWS dataset")
     parser.add_argument("--dataset", "-da", action="store_true", help="If want to run on new personal dataset")
-    parser.add_argument("--multirun", "-multi", type=int, help="If want to run multiple runs")
     args = parser.parse_args()
     
 
@@ -642,6 +635,9 @@ if __name__ == "__main__":
     assert args.shortcut_model_name in supported_shortcut_model_names
     assert args.subtask in supported_subtasks
     assert args.approach in supported_approaches
+
+    if args.subtask == "generation":
+        assert args.approach == "zero_shot", "ERROR: Only zero_shot is supported for generation"
 
     if args.prompt_number:
         assert args.is_devel, "ERROR: Prompt number is only for development"
@@ -674,5 +670,4 @@ if __name__ == "__main__":
             domain = args.domain,
             fews = args.fews,
             dataset = args.dataset,
-            multirun = args.multirun,
             semcor_samples = semcor_samples)
