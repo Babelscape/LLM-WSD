@@ -122,17 +122,7 @@ LLM-WSD/
 If you use this code or data in your research, please cite our paper:
 
 ```bibtex
-@inproceedings{meconi-etal-2025-llm-wsd,
-    title = "Do Large Language Models Understand Word Senses?",
-    author = "Meconi, Domenico and
-              Stirpe, Simone and
-              Martelli, Federico and
-              Lavalle, Leonardo and
-              Navigli, Roberto",
-    booktitle = "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing",
-    year = "2025",
-    publisher = "Association for Computational Linguistics",
-}
+placeholder
 ```
 
 ---
