@@ -39,6 +39,8 @@ DEEPSEEK_KEY=your-deepseek-key-here  # if you need to evaluate deepseek
 HCP_PATH=path-to-your-hcp-saved-models  # if you run on HCP
 ```
 
+---
+
 ## Repository Structure
 
 ```
