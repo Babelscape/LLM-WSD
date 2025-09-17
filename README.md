@@ -17,6 +17,7 @@ Understanding the meaning of words in context is a fundamental capability for La
 ---
 
 ## Setup the environment
+Clone the repository:
 ```bash
 git clone https://github.com/Babelscape/LLM-WSD.git
 cd LLM-WSD
