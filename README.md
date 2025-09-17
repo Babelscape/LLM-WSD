@@ -1,44 +1,36 @@
-# Do Large Language Models Understand Word Senses?
+<h1 align ="center"> Do Large Language Models Understand Word Senses?</h1>
 
 This repository contains the code and data for the paper "*Do Large Language Models Understand Word Senses?*" accepted at **EMNLP 2025**.
 
-**Authors:** Domenico Meconi¹, Simone Stirpe¹, Federico Martelli², Leonardo Lavalle¹, Roberto Navigli¹²
+If you find our paper, code or framework useful, please reference this work in your paper:
 
-¹*Babelscape* | ²*Sapienza NLP Group, Sapienza University of Rome*
+```bibtex
+placeholder
+```
+---
+
+## Abstract
+
+Understanding the meaning of words in context is a fundamental capability for Large Language Models (LLMs). Despite extensive evaluation efforts, the extent to which LLMs show evidence that they truly grasp word senses remains underexplored. In this paper, we address this gap by evaluating both i) the Word Sense Disambiguation (WSD) capabilities of instruction-tuned LLMs, comparing their performance to state-of-the-art systems specifically designed for the task, and ii) the ability of two top-performing open- and closed-source LLMs to understand word senses in three generative settings: definition generation, free-form explanation, and example generation. Notably, we find that, in the WSD task, leading models such as GPT-4o and DeepSeek-V3 achieve performance on par with specialized WSD systems, while also demonstrating greater robustness across domains and levels of difficulty. In the generation tasks, results reveal that LLMs can explain the meaning of words in context up to 98\% accuracy, with the highest performance observed in the free-form explanation task, which best aligns with their generative capabilities.
 
 ---
 
-## 🎯 Abstract
-
-Understanding the meaning of words in context is a fundamental capability for Large Language Models (LLMs). Despite extensive evaluation efforts, the extent to which LLMs show evidence that they truly grasp word senses remains underexplored.
-
-This paper presents a comprehensive study evaluating:
-1. **Word Sense Disambiguation (WSD) capabilities** of instruction-tuned LLMs compared to state-of-the-art specialized systems
-2. **Generative understanding** of word senses through definition generation, free-form explanation, and example generation
-
-**Key Findings:**
-- Leading models (GPT-4o, DeepSeek-V3) achieve performance **on par with specialized WSD systems**
-- LLMs demonstrate **greater robustness** across domains and difficulty levels
-- In generation tasks, LLMs can explain word meanings with **up to 98% accuracy**
-- Free-form explanation shows the highest performance, aligning with LLMs' generative capabilities
-
----
-
-## 🚀 Quick Start
-
-### Installation
+## Setup the environment
 ```bash
 git clone https://github.com/Babelscape/LLM-WSD.git
 cd LLM-WSD
 ```
-It's suggested to create a conda env with python 3.11 and then:
-```bash
+It's suggested to install [conda](https://docs.conda.io/en/latest/), then use this command to create a new environment:
+```
+conda create -n llm-wsd python=3.11
+```
+Then, activate the newly-created environment and install the required libraries:
+```
+conda activate llm-wsd
 pip install -r requirements.txt
 ```
 
-### Environment Setup
-
-Create a `.env` file with your API keys:
+Optionally, insert in the `.env` file your API keys and path if you run on an HCP cluster:
 
 ```bash
 OPENAI_API_KEY=your-openai-key-here  # if you need to evaluate gpt
@@ -46,9 +38,9 @@ DEEPSEEK_KEY=your-deepseek-key-here  # if you need to evaluate deepseek
 HCP_PATH=path-to-your-hcp-saved-models  # if you run on HCP
 ```
 
-### Basic Usage
+## Basic Usage
 
-#### 1. Generate Dataset from XML
+### 1. Generate Dataset from XML
 Convert XML datasets in a format that follows the one introduced by [Raganato et al. (2017)](https://www.aclweb.org/anthology/E17-1010/) to JSON format:
 
 ```bash
@@ -59,7 +51,7 @@ python src/generate_dataset_from_xml.py \
     --shuffle_candidates #if you want to create a dataset with candidates in random order
 ```
 
-#### 2. Run Selection Experiments
+### 2. Run Selection Experiments
 
 ```bash
 python src/disambiguate.py \
@@ -69,7 +61,7 @@ python src/disambiguate.py \
 ```
 
 
-#### 3. Run Generation Experiments
+### 3. Run Generation Experiments
 
 ```bash
 python src/disambiguate.py \
@@ -78,7 +70,7 @@ python src/disambiguate.py \
     --shortcut_model_name model_name #see src/variables.py for the supported models
 ```
 
-#### 4. Evaluate Results
+### 4. Evaluate Results
 
 ```bash
 python src/score.py \
@@ -98,7 +90,7 @@ Optional values for points 2,3 and 4:
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 LLM-WSD/
@@ -114,39 +106,24 @@ LLM-WSD/
 ├── requirements.txt             # Python dependencies
 └── README.md                   # This file
 ```
-
 ---
 
-## 📄 Citation
+## License
 
-If you use this code or data in your research, please cite our paper:
-
-```bibtex
-placeholder
-```
-
+This work is under the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 ---
 
-## 📜 License
-
-This work is licensed under the **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License**.
-
-To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
-
----
-
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please feel free to:
 - Report bugs and issues
 - Suggest new features or improvements
-- Submit pull requests
 
 For major changes, please open an issue first to discuss what you would like to change.
 
 ---
 
-## 📞 Contact
+## Contact
 
 For questions about this research, please contact:
 - **Domenico Meconi**: meconi@babelscape.com
