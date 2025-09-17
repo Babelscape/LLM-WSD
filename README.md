@@ -1,6 +1,7 @@
 <h1 align ="center"> Do Large Language Models Understand Word Senses?</h1>
 
 This repository contains the code and data for the paper "*Do Large Language Models Understand Word Senses?*" accepted at **EMNLP 2025**.
+You can find all the manual annotations in this [Drive Folder](https://drive.google.com/drive/u/0/folders/1GS9Zi8IAwnLJVSy2L-OErcavQG0ovPMx)
 
 If you find our paper, code or framework useful, please reference this work in your paper:
 
@@ -51,7 +52,7 @@ python src/generate_dataset_from_xml.py \
     --shuffle_candidates #if you want to create a dataset with candidates in random order
 ```
 
-### 2. Run Selection Experiments
+### 2. Run WSD Experiments
 
 ```bash
 python src/disambiguate.py \
@@ -70,7 +71,7 @@ python src/disambiguate.py \
     --shortcut_model_name model_name #see src/variables.py for the supported models
 ```
 
-### 4. Evaluate Results
+### 4. Evaluate WSD Results
 
 ```bash
 python src/score.py \
