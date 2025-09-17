@@ -21,6 +21,14 @@ Understanding the meaning of words in context is a fundamental capability for La
 git clone https://github.com/Babelscape/LLM-WSD.git
 cd LLM-WSD
 ```
+Download the datasets:
+```
+pip install gdown
+gdown 110XFfCq93zTGQHr65lNsOXzn-KXDFXdb -O datasets.zip
+unzip datasets.zip
+rm datasets.zip
+```
+
 It's suggested to install [conda](https://docs.conda.io/en/latest/), then use this command to create a new environment:
 ```
 conda create -n llm-wsd python=3.11
