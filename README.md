@@ -63,6 +63,7 @@ LLM-WSD/
 │   ├── utils.py                      # Core utilities and functions
 │   ├── variables.py                  # Model configs and prompt templates
 │   └── env.py                        # Environment variable loading
+├── .env                              # Environment variables
 ├── requirements.txt                  # Python dependencies
 └── README.md                         # This file
 ```
