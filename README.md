@@ -55,7 +55,8 @@ HCP_PATH=path-to-your-hcp-saved-models  # if you run on HCP
 ```
 LLM-WSD/
 ├── data/
-│   └── evaluation/                   # Evaluation datasets
+│   ├──development/                   # Development datasets
+│   └──evaluation/                    # Evaluation datasets
 ├── src/
 │   ├── disambiguate.py               # Main WSD evaluation script
 │   ├── score.py                      # Results evaluation and metrics
@@ -71,13 +72,13 @@ LLM-WSD/
 
 ## Basic Usage
 
-### 1. Generate Dataset from XML
-Convert XML datasets in a format that follows the one introduced by [Raganato et al. (2017)](https://www.aclweb.org/anthology/E17-1010/) to JSON format:
+### 1. Preprocess your dataset
+Convert datasets from a format that follows the one introduced by [Raganato et al. (2017)](https://www.aclweb.org/anthology/E17-1010/) to a JSON format:
 
 ```bash
 python src/generate_dataset_from_xml.py \
-    --data_path path/to/dataset.data.xml \
-    --gold_path path/to/dataset.gold.key.txt \
+    --data_path path/to/your/dataset.data.xml \
+    --gold_path path/to/your/dataset.gold.key.txt \
     --highlight_target \ #if you want to highlight the target word
     --shuffle_candidates #if you want to create a dataset with candidates in random order
 ```
