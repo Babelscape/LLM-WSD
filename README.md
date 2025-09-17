@@ -39,6 +39,24 @@ DEEPSEEK_KEY=your-deepseek-key-here  # if you need to evaluate deepseek
 HCP_PATH=path-to-your-hcp-saved-models  # if you run on HCP
 ```
 
+## Repository Structure
+
+```
+LLM-WSD/
+├── data/
+│   └── evaluation/                   # Evaluation datasets
+├── src/
+│   ├── disambiguate.py               # Main WSD evaluation script
+│   ├── score.py                      # Results evaluation and metrics
+│   ├── generate_dataset_from_xml.py  # Dataset preprocessing
+│   ├── utils.py                      # Core utilities and functions
+│   ├── variables.py                  # Model configs and prompt templates
+│   └── env.py                        # Environment variable loading
+├── requirements.txt                  # Python dependencies
+└── README.md                         # This file
+```
+---
+
 ## Basic Usage
 
 ### 1. Generate Dataset from XML
@@ -91,23 +109,6 @@ Optional values for points 2,3 and 4:
 
 ---
 
-## Repository Structure
-
-```
-LLM-WSD/
-├── src/
-│   ├── disambiguate.py          # Main WSD evaluation script
-│   ├── score.py                 # Results evaluation and metrics
-│   ├── generate_dataset_from_xml.py  # Dataset preprocessing
-│   ├── utils.py                 # Core utilities and functions
-│   ├── variables.py             # Model configs and prompt templates
-│   └── env.py                   # Environment variable loading
-├── data/
-│   └── evaluation/              # Evaluation datasets
-├── requirements.txt             # Python dependencies
-└── README.md                   # This file
-```
----
 
 ## License
 
