@@ -6,7 +6,15 @@ You can find all the manual annotations in this [Drive Folder](https://drive.goo
 If you find our paper, code or framework useful, please reference this work in your paper:
 
 ```bibtex
-placeholder
+@misc{meconi2025largelanguagemodelsunderstand,
+      title={Do Large Language Models Understand Word Senses?}, 
+      author={Domenico Meconi and Simone Stirpe and Federico Martelli and Leonardo Lavalle and Roberto Navigli},
+      year={2025},
+      eprint={2509.13905},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2509.13905}, 
+}
 ```
 ---
 
