@@ -1,7 +1,7 @@
 <h1 align ="center"> Do Large Language Models Understand Word Senses?</h1>
 
 This repository contains the code and data for the paper "*Do Large Language Models Understand Word Senses?*" accepted at **EMNLP 2025** main conference.
-You can find all the manual annotations in this [Drive Folder](https://drive.google.com/drive/u/0/folders/1GS9Zi8IAwnLJVSy2L-OErcavQG0ovPMx)
+You can find all the manual annotations in this [Drive Folder](https://drive.google.com/drive/u/0/folders/1GS9Zi8IAwnLJVSy2L-OErcavQG0ovPMx).
 
 If you find our paper, code or framework useful, please reference this work in your paper:
 
