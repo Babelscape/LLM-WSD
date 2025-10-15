@@ -175,3 +175,5 @@ if __name__ == "__main__":
         highlight_target=args.highlight_target,
         shuffle_candidates=args.shuffle_candidates,
     )
+    
+    print(f"Dataset saved at: {output_path}")
