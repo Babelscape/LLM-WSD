@@ -68,7 +68,7 @@ def _create_folder(subtask,
                    hard, 
                    domain, 
                    fews,
-                   custom_dataset,
+                   custom_dataset_path,
                    is_score = False):
     """
         Create or clean output folders for experiment results.
@@ -84,7 +84,7 @@ def _create_folder(subtask,
             hard (bool): Whether results should be stored in `hard/`.
             domain (bool): Whether results should be stored in `42D/`.
             fews (bool): Whether results should be stored in `FEWS/`.
-            custom_dataset (str): Whether results should be stored in `custom_dataset/`.
+            custom_dataset_path (str): Whether results should be stored in `custom_dataset/`.
             is_score (bool, optional): If True, cleans ranking files instead of result files.
 
         Returns:
@@ -116,7 +116,7 @@ def _create_folder(subtask,
         output_file_path += "42D/"  
     elif fews:
         output_file_path += "FEWS/"
-    elif custom_dataset:
+    elif custom_dataset_path:
          output_file_path += "custom_dataset/" 
     else:
         output_file_path += "eval/"   
