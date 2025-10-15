@@ -16,7 +16,7 @@ def _get_gold_data(subtask:str,
                    hard: bool, 
                    domain: bool,
                    fews: bool,
-                   dataset: bool):
+                   custom_dataset_path: str):
     """
         Load the gold standard dataset based on task and configuration.
 
@@ -28,15 +28,13 @@ def _get_gold_data(subtask:str,
             hard (bool): Whether to load the "hard" dataset.
             domain (bool): Whether to load the domain-specific (42D) dataset.
             fews (bool): Whether to load the FEWS dataset.
-            dataset (bool): Whether to load a custom dataset.
+            custom_dataset_path (str): Whether to load a custom dataset.
 
         Returns:
             list[dict]: Loaded dataset, each instance containing WSD info.
     """
     if subtask == "generation" and domain:
         gold_data_path = "../data/evaluation/selected_samples_42D.json"
-    if subtask == "generation" and dataset:
-        gold_data_path = "../data/evaluation/selected_samples_dataset.json"
     elif subtask == "generation":
         gold_data_path = "../data/evaluation/selected_samples.json"
     elif is_development:
@@ -51,8 +49,8 @@ def _get_gold_data(subtask:str,
         gold_data_path = "../data/evaluation/42D_preprocessed.json"
     elif fews:
         gold_data_path = "../data/evaluation/fews_preprocessed.json"
-    elif dataset:
-        gold_data_path = "../data/evaluation/dataset_preprocessed.json"
+    elif custom_dataset_path:
+        gold_data_path = custom_dataset_path
     else:
         gold_data_path = "../data/evaluation/ALLamended_preprocessed.json"
 
@@ -70,7 +68,7 @@ def _create_folder(subtask,
                    hard, 
                    domain, 
                    fews,
-                   dataset,
+                   custom_dataset,
                    is_score = False):
     """
         Create or clean output folders for experiment results.
@@ -86,7 +84,7 @@ def _create_folder(subtask,
             hard (bool): Whether results should be stored in `hard/`.
             domain (bool): Whether results should be stored in `42D/`.
             fews (bool): Whether results should be stored in `FEWS/`.
-            dataset (bool): Whether results should be stored in `dataset/`.
+            custom_dataset (str): Whether results should be stored in `custom_dataset/`.
             is_score (bool, optional): If True, cleans ranking files instead of result files.
 
         Returns:
@@ -118,8 +116,8 @@ def _create_folder(subtask,
         output_file_path += "42D/"  
     elif fews:
         output_file_path += "FEWS/"
-    elif dataset:
-         output_file_path += "dataset/" 
+    elif custom_dataset:
+         output_file_path += "custom_dataset/" 
     else:
         output_file_path += "eval/"   
 

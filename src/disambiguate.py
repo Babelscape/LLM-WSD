@@ -325,7 +325,7 @@ def process(subtask: str,
             hard: bool,
             domain: bool,
             fews: bool,
-            dataset: bool,
+            custom_dataset_path: str,
             semcor_samples: dict
             ):
     """
@@ -342,7 +342,7 @@ def process(subtask: str,
         hard (bool): Use hard dataset.
         domain (bool): Use 42D domain-specific dataset.
         fews (bool): Use FEWS dataset.
-        dataset (bool): Use personal dataset.
+        custom_dataset_path (str): Path to personal dataset.
         semcor_samples (dict): Few-shot SemCor samples.
 
         Returns:
@@ -358,7 +358,7 @@ def process(subtask: str,
                                       hard = hard,
                                       domain = domain,
                                       fews = fews,
-                                      dataset = dataset)
+                                      custom_dataset_path = custom_dataset_path)
 
     gold_data = _get_gold_data(subtask=subtask, 
                                is_development=is_devel, 
@@ -367,7 +367,7 @@ def process(subtask: str,
                                hard=hard, 
                                domain=domain, 
                                fews=fews, 
-                               dataset=dataset)
+                               custom_dataset_path=custom_dataset_path)
     
     n_instances_processed = 0
     json_data = []
@@ -528,8 +528,7 @@ def process(subtask: str,
                 if len(ids) % 100 == 0:
                     json_data = [{"instance_id": instance_id, "answer": answer} for instance_id, answer in zip(ids, answers)]
 
-                    output_path_json = f"{output_file_path}/output_prompt_{prompt_number}"
-                    output_path_json += ".json" if not multirun else f"_run{run+1}.json"
+                    output_path_json = f"{output_file_path}/output_prompt_{prompt_number}.json"
                     with open(output_path_json, "w") as fw_json:
                         json.dump(json_data, fw_json, indent=4)
                 
@@ -595,14 +594,12 @@ def process(subtask: str,
             json_data = [{"instance_id": instance_id, "answer": answer} 
                     for instance_id, answer in zip(dataset_["instance_id"], answers)]
 
-        output_path_json = f"{output_file_path}/output_prompt_{prompt_number}"
-        output_path_json += ".json" if not multirun else f"_run{run+1}.json"
+        output_path_json = f"{output_file_path}/output_prompt_{prompt_number}.json"
 
         with open(output_path_json, "w") as fw_json:
             json.dump(json_data, fw_json, indent=4)
 
-        output_path_txt = f"{output_file_path}/output_prompt_{prompt_number}"
-        output_path_txt += ".txt" if not multirun else f"_run{run+1}.txt"
+        output_path_txt = f"{output_file_path}/output_prompt_{prompt_number}.txt"
         with open(output_path_txt, "w") as fa_txt:
             for entry in json_data:
                 try:
@@ -627,7 +624,7 @@ if __name__ == "__main__":
     parser.add_argument("--hard", "-ha", action="store_true", help="If want to run on hard dataset")
     parser.add_argument("--domain", "-do", action="store_true", help="If want to run on 42D dataset")
     parser.add_argument("--fews", "-fe", action="store_true", help="If want to run on FEWS dataset")
-    parser.add_argument("--dataset", "-da", action="store_true", help="If want to run on new personal dataset")
+    parser.add_argument("--custom_dataset_path", "-cd", type=str, default="", help="Input the path to the processed dataset if you want to run on a new custom dataset")
     args = parser.parse_args()
     
 
@@ -654,7 +651,7 @@ if __name__ == "__main__":
     else: 
         semcor_samples = None
 
-    assert sum([args.is_devel, args.more_context ,args.shuffle_candidates, args.hard, args.domain, args.fews, args.dataset]) < 2, "ERROR: You provided too many dataset"
+    assert sum([args.is_devel, args.more_context ,args.shuffle_candidates, args.hard, args.domain, args.fews]) < 2, "ERROR: You provided too many dataset"
 
     local_rank = int(os.environ.get("LOCAL_RANK", 0))
     torch.cuda.set_device(local_rank)
@@ -669,5 +666,5 @@ if __name__ == "__main__":
             hard = args.hard,
             domain = args.domain,
             fews = args.fews,
-            dataset = args.dataset,
+            custom_dataset_path = args.custom_dataset_path,
             semcor_samples = semcor_samples)

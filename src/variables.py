@@ -15,6 +15,7 @@ shortcut_model_name2full_model_name = {"llama_1b" : "meta-llama/Llama-3.2-1B-Ins
                                        "gpt4_1" : "gpt-4.1",
                                        "deepseek": "deepseek-chat",
                                        "qwen32": "Qwen/Qwen2.5-32B-Instruct"}
+                                        #ADD MODELS IF NEEDED
 
 supported_subtasks = ["selection", "generation"]
 supported_approaches = ["zero_shot", "one_shot", "few_shot", "perplexity"]
@@ -35,6 +36,7 @@ supported_shortcut_model_names = ["llama_1b",
                                 "deepseek",
                                 "qwen32",
                                 "llama_70b"]
+                                #ADD SHORTCUT NAME IF NEEDED
 
 chat_template_prompts = {
                             "selection":{
