@@ -77,7 +77,7 @@ def compute_scores(disambiguated_data_path:str,
                    hard: bool,
                    domain: bool,
                    fews: bool,
-                   dataset: bool):
+                   custom_dataset_path: str):
     """
         Evaluate disambiguation output against gold data.
 
@@ -94,7 +94,7 @@ def compute_scores(disambiguated_data_path:str,
             hard (bool): Whether to evaluate on the "hard" dataset.
             domain (bool): Whether to evaluate on the domain-specific dataset.
             fews (bool): Whether to evaluate on FEWS dataset.
-            dataset (bool): Whether to evaluate on a custom dataset.
+            custom_dataset_path (str): Whether to evaluate on a custom dataset.
 
         Returns:
             None: Prints scores to stdout and saves ranked definitions JSON.
@@ -108,7 +108,7 @@ def compute_scores(disambiguated_data_path:str,
                                hard=hard, 
                                domain=domain, 
                                fews=fews,
-                               dataset=dataset)
+                               custom_dataset_path=custom_dataset_path)
     
     with open(disambiguated_data_path, "r") as json_file:
         disambiguated_data = json.load(json_file)
@@ -174,7 +174,7 @@ if __name__ == "__main__":
     parser.add_argument("--hard", "-ha", action="store_true", help="If want to run on hard dataset")
     parser.add_argument("--domain", "-do", action="store_true", help="If want to run on 42D dataset")
     parser.add_argument("--fews", "-fe", action="store_true", help="If want to run on FEWS dataset")
-    parser.add_argument("--dataset", "-da", action="store_true", help="If want to run on new personal dataset")
+    parser.add_argument("--custom_dataset_path", "-cd", type=str, default="", help="Input the path to the processed dataset if you want to run on a new custom dataset")
  
     args = parser.parse_args()
 
@@ -188,7 +188,7 @@ if __name__ == "__main__":
     else:
         args.prompt_number = 2
 
-    assert sum([args.is_devel, args.more_context ,args.shuffle_candidates, args.hard, args.domain, args.fews, args.dataset]) < 2, "ERROR: You provided too many dataset"
+    assert sum([args.is_devel, args.more_context ,args.shuffle_candidates, args.hard, args.domain, args.fews]) < 2, "ERROR: You provided too many dataset"
 
         
     disambiguated_data_path = _create_folder(subtask="selection", 
@@ -201,7 +201,7 @@ if __name__ == "__main__":
                                              hard=args.hard,
                                              domain=args.domain,
                                              fews=args.fews,
-                                             dataset=args.dataset,
+                                             custom_dataset_path=args.custom_dataset_path,
                                              is_score = True)
     
 
@@ -217,4 +217,4 @@ if __name__ == "__main__":
                    hard=args.hard, 
                    domain=args.domain, 
                    fews=args.fews,
-                   dataset=args.dataset)
+                   custom_dataset_path=args.custom_dataset_path)
