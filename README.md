@@ -97,7 +97,7 @@ python src/generate_dataset_from_xml.py \
 python src/disambiguate.py \
     --subtask selection \
     --approach {zero_shot/one_shot/few_shot/perplexity} \
-    --shortcut_model_name model_name #see src/variables.py for the supported models
+    --shortcut_model_name model_name #see src/variables.py L22 for the supported models
 ```
 
 
@@ -107,16 +107,15 @@ python src/disambiguate.py \
 python src/disambiguate.py \
     --subtask generation \
     --approach zero_shot \
-    --shortcut_model_name model_name #see src/variables.py for the supported models
+    --shortcut_model_name model_name #see src/variables.py L22 for the supported models
 ```
 
 ### 4. Evaluate WSD Results
 
 ```bash
 python src/score.py \
-    --subtask selection \
     --approach {zero_shot/one_shot/few_shot/perplexity} \
-    --shortcut_model_name model_name #see src/variables.py for the supported models
+    --shortcut_model_name model_name #see src/variables.py L22 for the supported models
     --pos {ALL/NOUN/ADJ/VERB/ADV}
 ```
 
@@ -127,7 +126,7 @@ Optional values for points 2,3 and 4:
 - `--shuffle_candidates`: Randomized definition order
 - `--hard`: Challenging cases (hardEN dataset)
 - `--domain`: Domain-specific evaluation (42D dataset)
-
+- `--custom_dataset_path` "/path/to/your/preprocessed/dataset.json" : If you want to test on your custom dataset
 ---
 
 
