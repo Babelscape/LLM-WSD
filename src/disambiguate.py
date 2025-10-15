@@ -553,8 +553,7 @@ def process(subtask: str,
                                             approach=approach, 
                                             prompt_number=prompt_number,
                                             more_context=more_context, 
-                                            semcor_samples_pos=semcor_sample_pos,
-                                            model = shortcut_model_name)
+                                            semcor_samples_pos=semcor_sample_pos)
                 
                 # Qwen needs to disable thinking
                 if shortcut_model_name == "qwen32":
