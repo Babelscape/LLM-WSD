@@ -107,8 +107,9 @@ python src/disambiguate.py \
 python src/disambiguate.py \
     --subtask generation \
     --approach zero_shot \
-    --shortcut_model_name model_name #see src/variables.py L22 for the supported models
-```
+    --shortcut_model_name model_name \ #see src/variables.py L22 for the supported models 
+    --prompt_number {1 (Definition Generation), 2 (Free-form Explanation) or 3 (Example Generation)}
+``` 
 
 ### 4. Evaluate WSD Results
 
