@@ -13,7 +13,7 @@
   
 </div>
 
-This repository contains the code and data for the paper "*Do Large Language Models Understand Word Senses?*" accepted at **EMNLP 2025** main conference.
+This repository contains the code and data for the paper "*Do Large Language Models Understand Word Senses?*" accepted at the **EMNLP 2025** main conference.
 You can find all the manual annotations in this [Drive Folder](https://drive.google.com/drive/u/0/folders/1GS9Zi8IAwnLJVSy2L-OErcavQG0ovPMx).
 
 If you find our paper, code or framework useful, please reference this work in your paper:
@@ -31,12 +31,6 @@ If you find our paper, code or framework useful, please reference this work in y
 ```
 ---
 
-# Abstract
-
-Understanding the meaning of words in context is a fundamental capability for Large Language Models (LLMs). Despite extensive evaluation efforts, the extent to which LLMs show evidence that they truly grasp word senses remains underexplored. In this paper, we address this gap by evaluating both i) the Word Sense Disambiguation (WSD) capabilities of instruction-tuned LLMs, comparing their performance to state-of-the-art systems specifically designed for the task, and ii) the ability of two top-performing open- and closed-source LLMs to understand word senses in three generative settings: definition generation, free-form explanation, and example generation. Notably, we find that, in the WSD task, leading models such as GPT-4o and DeepSeek-V3 achieve performance on par with specialized WSD systems, while also demonstrating greater robustness across domains and levels of difficulty. In the generation tasks, results reveal that LLMs can explain the meaning of words in context up to 98\% accuracy, with the highest performance observed in the free-form explanation task, which best aligns with their generative capabilities.
-
----
-
 # Setup the environment
 Clone the repository:
 ```bash
@@ -51,7 +45,7 @@ unzip datasets.zip
 rm datasets.zip
 ```
 
-It's suggested to install [conda](https://docs.conda.io/en/latest/), then use this command to create a new environment:
+We suggest to install [conda](https://docs.conda.io/en/latest/) and then use this command to create a new environment:
 ```
 conda create -n llm-wsd python=3.11
 ```
@@ -61,12 +55,12 @@ conda activate llm-wsd
 pip install -r requirements.txt
 ```
 
-Optionally, insert in the `.env` file your API keys and path if you run on an HCP cluster:
+Optionally, insert in the `.env` file your API keys and path if you run on an HPC cluster:
 
 ```bash
 OPENAI_API_KEY=your-openai-key-here  # if you need to evaluate gpt
 DEEPSEEK_KEY=your-deepseek-key-here  # if you need to evaluate deepseek
-HCP_PATH=path-to-your-hcp-saved-models  # if you run on HCP
+HPC_PATH=path-to-your-hcp-saved-models  # if you run on HPC
 ```
 
 ---
@@ -109,7 +103,7 @@ python src/generate_dataset_from_xml.py \
 ```bash
 python src/disambiguate.py \
     --subtask selection \
-    --approach {zero_shot/one_shot/few_shot/perplexity} \
+    --approach {zero_shot|one_shot|few_shot|perplexity} \
     --shortcut_model_name model_name #see src/variables.py L22 for the supported models
 ```
 
@@ -121,19 +115,19 @@ python src/disambiguate.py \
     --subtask generation \
     --approach zero_shot \
     --shortcut_model_name model_name \ #see src/variables.py L22 for the supported models 
-    --prompt_number {1 (Definition Generation), 2 (Free-form Explanation) or 3 (Example Generation)}
+    --prompt_number {1 (Definition Generation)|2 (Free-form Explanation)|3 (Example Generation)}
 ``` 
 
 ## 4. Evaluate WSD Results
 
 ```bash
 python src/score.py \
-    --approach {zero_shot/one_shot/few_shot/perplexity} \
+    --approach {zero_shot|one_shot|few_shot|perplexity} \
     --shortcut_model_name model_name #see src/variables.py L22 for the supported models
-    --pos {ALL/NOUN/ADJ/VERB/ADV}
+    --pos {ALL|NOUN|ADJ|VERB|ADV}
 ```
 
-Optional values for points 2,3 and 4:
+Optional values for points 2, 3 and 4:
 - `--is_devel`: Use SemEval-2007 development data
 - `--prompt_number`: If is_devel is selected insert a number from 1 to 20 
 - `--more_context`: Extended context sentences
@@ -164,5 +158,5 @@ For major changes, please open an issue first to discuss what you would like to 
 
 For questions about this research, please contact:
 - **Domenico Meconi**: meconi@babelscape.com
-- **Roberto Navigli**: navigli@diag.uniroma1.it
+- **Roberto Navigli**: navigli@babelscape.com
 
