@@ -59,7 +59,7 @@ Optionally, insert in the `.env` file your API keys and path if you run on an HP
 ```bash
 OPENAI_API_KEY=your-openai-key-here  # if you need to evaluate gpt
 DEEPSEEK_KEY=your-deepseek-key-here  # if you need to evaluate deepseek
-HPC_PATH=path-to-your-hcp-saved-models  # if you run on HPC
+HPC_PATH=path-to-your-hpc-saved-models  # if you run on HPC
 ```
 
 ---
