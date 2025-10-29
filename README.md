@@ -14,7 +14,6 @@
 </div>
 
 This repository contains the code and data for the paper "*Do Large Language Models Understand Word Senses?*" accepted at the **EMNLP 2025** main conference.
-You can find all the manual annotations in this [Drive Folder](https://drive.google.com/drive/u/0/folders/1GS9Zi8IAwnLJVSy2L-OErcavQG0ovPMx).
 
 If you find our paper, code or framework useful, please reference this work in your paper:
 
@@ -40,9 +39,9 @@ cd LLM-WSD
 Download the datasets:
 ```
 pip install gdown
-gdown 110XFfCq93zTGQHr65lNsOXzn-KXDFXdb -O datasets.zip
-unzip datasets.zip
-rm datasets.zip
+gdown 110XFfCq93zTGQHr65lNsOXzn-KXDFXdb -O LLM-WSD-datasets.zip
+unzip LLM-WSD-datasets.zip
+rm LLM-WSD-datasets.zip
 ```
 
 We suggest to install [conda](https://docs.conda.io/en/latest/) and then use this command to create a new environment:
