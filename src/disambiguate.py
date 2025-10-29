@@ -16,7 +16,7 @@ import time
 from utils import _get_gold_data, _create_folder, _get_text, _clean, _split_semcor
 from variables import shortcut_model_name2full_model_name, chat_template_prompts 
 from variables import supported_subtasks, supported_approaches, supported_shortcut_model_names
-from env import deepseek_key, gpt_key, hcp_path_to_models
+from env import deepseek_key, gpt_key, hpc_path_to_models
 
 
 
@@ -386,7 +386,7 @@ def process(subtask: str,
     else:   
         if shortcut_model_name in ["gemma_3_12b", "gemma_3_27b", "qwen32", "llama_70b"]:
             # for hcp you need to predownload the models, set your hcp path in .env HCP_PATH
-            model_path = f"{hcp_path_to_models}/{shortcut_model_name}"
+            model_path = f"{hpc_path_to_models}/{shortcut_model_name}"
             tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True, trust_remote_code=True)
             tokenizer.pad_token = tokenizer.eos_token
             model = LLM(
