@@ -31,13 +31,13 @@ If you find our paper, code or framework useful, please reference this work in y
 ```
 ---
 
-## Abstract
+# Abstract
 
 Understanding the meaning of words in context is a fundamental capability for Large Language Models (LLMs). Despite extensive evaluation efforts, the extent to which LLMs show evidence that they truly grasp word senses remains underexplored. In this paper, we address this gap by evaluating both i) the Word Sense Disambiguation (WSD) capabilities of instruction-tuned LLMs, comparing their performance to state-of-the-art systems specifically designed for the task, and ii) the ability of two top-performing open- and closed-source LLMs to understand word senses in three generative settings: definition generation, free-form explanation, and example generation. Notably, we find that, in the WSD task, leading models such as GPT-4o and DeepSeek-V3 achieve performance on par with specialized WSD systems, while also demonstrating greater robustness across domains and levels of difficulty. In the generation tasks, results reveal that LLMs can explain the meaning of words in context up to 98\% accuracy, with the highest performance observed in the free-form explanation task, which best aligns with their generative capabilities.
 
 ---
 
-## Setup the environment
+# Setup the environment
 Clone the repository:
 ```bash
 git clone https://github.com/Babelscape/LLM-WSD.git
@@ -71,7 +71,7 @@ HCP_PATH=path-to-your-hcp-saved-models  # if you run on HCP
 
 ---
 
-## Repository Structure
+# Repository Structure
 
 ```
 LLM-WSD/
@@ -91,9 +91,9 @@ LLM-WSD/
 ```
 ---
 
-## Basic Usage
+# Basic Usage
 
-### 1. Preprocess your dataset
+## 1. Preprocess your dataset
 Convert datasets from a format that follows the one introduced by [Raganato et al. (2017)](https://www.aclweb.org/anthology/E17-1010/) to a JSON format:
 
 ```bash
@@ -104,7 +104,7 @@ python src/generate_dataset_from_xml.py \
     --shuffle_candidates #if you want to create a dataset with candidates in random order
 ```
 
-### 2. Run WSD Experiments
+## 2. Run WSD Experiments
 
 ```bash
 python src/disambiguate.py \
@@ -114,7 +114,7 @@ python src/disambiguate.py \
 ```
 
 
-### 3. Run Generation Experiments
+## 3. Run Generation Experiments
 
 ```bash
 python src/disambiguate.py \
@@ -124,7 +124,7 @@ python src/disambiguate.py \
     --prompt_number {1 (Definition Generation), 2 (Free-form Explanation) or 3 (Example Generation)}
 ``` 
 
-### 4. Evaluate WSD Results
+## 4. Evaluate WSD Results
 
 ```bash
 python src/score.py \
@@ -144,13 +144,13 @@ Optional values for points 2,3 and 4:
 ---
 
 
-## License
+# License
 
 This work is under the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0) license](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 ---
 
-## Contributing
+# Contributing
 
 We welcome contributions! Please feel free to:
 - Report bugs and issues
@@ -160,7 +160,7 @@ For major changes, please open an issue first to discuss what you would like to 
 
 ---
 
-## Contact
+# Contact
 
 For questions about this research, please contact:
 - **Domenico Meconi**: meconi@babelscape.com
