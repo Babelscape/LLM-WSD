@@ -6,7 +6,7 @@
 [![Conference](https://img.shields.io/badge/EMNLP-2025-4b44ce.svg)](https://2025.emnlp.org/)
 [![Paper](https://img.shields.io/badge/paper-EMNLP--anthology-B31B1B.svg)]()
 
-![i](./assets/Sapienza_Babelscape.png)
+![i](./assets/babelscape+sapnlp.png)
 
 </div>
 <div align="center">
