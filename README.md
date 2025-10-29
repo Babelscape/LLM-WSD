@@ -18,15 +18,24 @@ This repository contains the code and data for the paper "*Do Large Language Mod
 If you find our paper, code or framework useful, please reference this work in your paper:
 
 ```bibtex
-@misc{meconi2025largelanguagemodelsunderstand,
-      title={Do Large Language Models Understand Word Senses?}, 
-      author={Domenico Meconi and Simone Stirpe and Federico Martelli and Leonardo Lavalle and Roberto Navigli},
-      year={2025},
-      eprint={2509.13905},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2509.13905}, 
+
+@inproceedings{meconi2025llmsunderstand,
+    title = "Do Large Language Models Understand Word Senses?",
+    author = "Domenico, Meconi  and
+      Simone, Stirpe  and
+      Federico, Martelli  and
+      Leonardo, Lavalle  and
+      Roberto,  Navigli",
+    booktitle = "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2025",
+    address = "Suzhou, China, CHN",
+    publisher = "Association for Computational Linguistics",
+    url = "",
+    doi = "",
+    pages = ""
 }
+
 ```
 ---
 
