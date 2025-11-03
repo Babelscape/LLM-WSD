@@ -19,22 +19,27 @@ If you find our paper, code or framework useful, please reference this work in y
 
 ```bibtex
 
-@inproceedings{meconi2025llmsunderstand,
+@inproceedings{meconi-etal-2025-large,
     title = "Do Large Language Models Understand Word Senses?",
-    author = "Domenico, Meconi  and
-      Simone, Stirpe  and
-      Federico, Martelli  and
-      Leonardo, Lavalle  and
-      Roberto,  Navigli",
+    author = "Meconi, Domenico  and
+      Stirpe, Simone  and
+      Martelli, Federico  and
+      Lavalle, Leonardo  and
+      Navigli, Roberto",
+    editor = "Christodoulopoulos, Christos  and
+      Chakraborty, Tanmoy  and
+      Rose, Carolyn  and
+      Peng, Violet",
     booktitle = "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing",
     month = nov,
     year = "2025",
-    address = "Suzhou, China, CHN",
+    address = "Suzhou, China",
     publisher = "Association for Computational Linguistics",
-    url = "",
-    doi = "",
-    pages = ""
+    url = "https://aclanthology.org/2025.emnlp-main.1720/",
+    pages = "33885--33904",
+    ISBN = "979-8-89176-332-6"
 }
+
 
 ```
 ---
