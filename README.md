@@ -108,9 +108,9 @@ Convert datasets from a format that follows the one introduced by [Raganato et a
 ```bash
 python src/generate_dataset_from_xml.py \
     --data_path path/to/your/dataset.data.xml \
-    --gold_path path/to/your/dataset.gold.key.txt \
-    --highlight_target \ #if you want to highlight the target word
-    --shuffle_candidates #if you want to create a dataset with candidates in random order
+    --gold_path path/to/your/dataset.gold.key.txt \ # [Optional] if you have a gold
+    --highlight_target \ # [Optional] if you want to highlight the target word
+    --shuffle_candidates # [Optional] if you want to create a dataset with candidates in random order
 ```
 
 ## 2. Run WSD Experiments
