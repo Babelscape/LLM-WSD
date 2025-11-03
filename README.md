@@ -15,6 +15,8 @@
 
 This repository contains the code and data for the paper "*Do Large Language Models Understand Word Senses?*" accepted at the **EMNLP 2025** main conference.
 
+In our paper, we investigate whether Large Language Models truly understand word senses in context. We evaluate a wide range of models on classic Word Sense Disambiguation benchmarks and novel generative settings, showing that top LLMs match state-of-the-art systems in WSD and achieve up to 98% accuracy in free-form sense explanation tasks.
+
 If you find our paper, code or framework useful, please reference this work in your paper:
 
 ```bibtex
